@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="27.120312mm"
+   height="27.119791mm"
+   viewBox="0 0 27.120312 27.119791"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="view.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.9077442"
+     inkscape:cx="22.869962"
+     inkscape:cy="57.948701"
+     inkscape:window-width="1868"
+     inkscape:window-height="1006"
+     inkscape:window-x="24"
+     inkscape:window-y="46"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-82.346018,-104.91266)">
+    <circle
+       style="fill:#aaaaaa;fill-opacity:1;stroke:#aaaaaa;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.96999;stroke-dasharray:none;stroke-opacity:1"
+       id="circle2979"
+       cx="95.90625"
+       cy="118.47242"
+       r="5.4154248" />
+    <path
+       id="path3020"
+       style="fill:#aaaaaa;fill-opacity:1;stroke:#aaaaaa;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.96999;stroke-dasharray:none;stroke-opacity:1"
+       d="m 95.906432,104.91266 a 13.560002,13.560002 0 0 0 -13.560413,13.55989 13.560002,13.560002 0 0 0 13.560413,13.5599 13.560002,13.560002 0 0 0 13.559898,-13.5599 13.560002,13.560002 0 0 0 -13.559898,-13.55989 z m 0,4.29276 a 9.2669287,9.2669287 0 0 1 9.266618,9.26713 9.2669287,9.2669287 0 0 1 -9.266618,9.26662 9.2669287,9.2669287 0 0 1 -9.267135,-9.26662 9.2669287,9.2669287 0 0 1 9.267135,-9.26713 z" />
+  </g>
+</svg>

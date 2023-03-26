@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="read.svg"
+   inkscape:export-filename="pfp.png"
+   inkscape:export-xdpi="960.936"
+   inkscape:export-ydpi="960.936"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.72693604"
+     inkscape:cx="167.13988"
+     inkscape:cy="241.42427"
+     inkscape:window-width="1868"
+     inkscape:window-height="1006"
+     inkscape:window-x="24"
+     inkscape:window-y="46"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="true" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-26.001732,-18.540503)">
+    <circle
+       style="fill:#6da4ff;fill-rule:evenodd;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;fill-opacity:1"
+       id="path449"
+       cx="76.001732"
+       cy="68.540504"
+       r="50" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1586"
+       width="64.08213"
+       height="39.604939"
+       x="43.960667"
+       y="48.738033"
+       ry="9.901206" />
+    <path
+       style="fill:none;stroke:#6da4ff;stroke-width:3.96875;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none"
+       d="M 43.960666,48.738033 76.001732,68.540503 108.0428,48.738033"
+       id="path1752" />
+  </g>
+</svg>
