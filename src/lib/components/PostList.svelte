@@ -16,11 +16,11 @@
                 'val': 'Hot',
             },
             {
-                'key': 'top',
+                'key': 'rating',
                 'val': 'Top',
             },
             {
-                'key': 'new',
+                'key': 'time',
                 'val': 'New',
             }
         ]}
