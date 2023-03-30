@@ -30,15 +30,15 @@
                 'val': 'Hot',
             },
             {
-                'key': 'top',
+                'key': 'rating',
                 'val': 'Top',
             },
             {
-                'key': 'new',
+                'key': 'time',
                 'val': 'New',
             }
         ]}
-    /> 
+    />       
 </span>
 
 <PostList data={data} noRatings={true} />
