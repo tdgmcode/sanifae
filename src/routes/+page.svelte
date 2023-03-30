@@ -11,6 +11,7 @@
 <span>
     <Dropdown 
         clickFunc={(val) => { window.location.search = setLocation(window.location,'type',val)}}
+        selectedKey='Filter by'
         options={[
             {
                 'key': 'all',
@@ -23,6 +24,7 @@
         ]}
     />   
     <Dropdown 
+        selectedKey='Sort by'
         clickFunc={(val) => { window.location.search = setLocation(window.location,'sort',val)}}
         options={[
             {

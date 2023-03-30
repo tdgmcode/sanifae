@@ -24,10 +24,12 @@
     let val;
     export let clickFunc = () => {};
     export let options = [];
+    export let selectedKey = '';
 </script>
 
 <select bind:value={val} on:change={() => clickFunc(val)} class='button'>
+    <option disabled selected value> {selectedKey}</option>
     {#each options as option}
-        <option value={option.key}>{option.val}</option>
+        <option value={option.key} selected={option.key == selectedKey}>{option.val}</option>
     {/each}
 </select>

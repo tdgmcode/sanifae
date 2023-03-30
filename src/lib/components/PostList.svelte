@@ -9,6 +9,7 @@
 
 {#if !noRatings}
     <Dropdown 
+        selectedKey='Sort by'
         clickFunc={(val) => { window.location.search = setLocation(window.location,'sort',val)}}
         options={[
             {
