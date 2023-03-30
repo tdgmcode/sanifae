@@ -1,22 +1,35 @@
 <script>
     import Post from '$lib/components/Post.svelte';
     import Button from '$lib/components/Button.svelte';
+    import Dropdown from '$lib/components/Dropdown.svelte';
     import {setLocation} from '$lib/util.js';
 
     export let data, noRatings = false;
 </script>
 
-<span>
-    {#if !noRatings}
-        <Button clickFunc={() => { window.location.search = setLocation(window.location,'sort','hot')}}>Hot</Button>
-        <Button clickFunc={() => { window.location.search = setLocation(window.location,'sort','rating')}}>Top</Button>
-        <Button clickFunc={() => { window.location.search = setLocation(window.location,'sort','time')}}>Recent</Button>
-    {/if}
-</span>
+{#if !noRatings}
+    <Dropdown 
+        clickFunc={(val) => { window.location.search = setLocation(window.location,'sort',val)}}
+        options={[
+            {
+                'key': 'hot',
+                'val': 'Hot',
+            },
+            {
+                'key': 'top',
+                'val': 'Top',
+            },
+            {
+                'key': 'new',
+                'val': 'New',
+            }
+        ]}
+    />       
+{/if}
 
 {#if data && data.postJson && data.postJson.data}
     {#each data.postJson.data as post}
-        <Post
+        <Post overflow={true}
             success={post.success}
             username={post.username}
             content={post.content}

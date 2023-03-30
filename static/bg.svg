@@ -26,7 +26,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.9077441"
-     inkscape:cx="86.493168"
+     inkscape:cx="86.321214"
      inkscape:cy="126.38664"
      inkscape:window-width="1868"
      inkscape:window-height="1006"
@@ -40,11 +40,11 @@
        inkscape:collect="always"
        id="linearGradient1587">
       <stop
-         style="stop-color:#d5f7fa;stop-opacity:1;"
+         style="stop-color:#ffffff;stop-opacity:1;"
          offset="0"
          id="stop1583" />
       <stop
-         style="stop-color:#a3c7ff;stop-opacity:1;"
+         style="stop-color:#c3c3c3;stop-opacity:1;"
          offset="1"
          id="stop1585" />
     </linearGradient>

@@ -33,8 +33,11 @@
 
     #main {
         min-height: 250px;
-        max-height: 500px;
         overflow-y: scroll;
+    }
+
+    #main.overflow {
+        max-height: 350px;
     }
 
     #main.tiny {
@@ -47,6 +50,7 @@
 
 <script>
     export let tiny = false;
+    export let overflow = false;
 
     let form;
 </script>
@@ -57,7 +61,7 @@
             Header
         </slot>
     </div>
-    <div id='main' class='{tiny ? "tiny" : ""}'>
+    <div id='main' class='{tiny ? "tiny" : ""} {overflow ? "overflow" : ""}'>
         <slot name="main">
             <p>Content</p>
         </slot>

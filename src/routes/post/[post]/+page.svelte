@@ -18,6 +18,7 @@
         id={firstEntry.id}
         isAuthor={firstEntry.isAuthor}
         time={firstEntry.time}
+        overflow={false}
     ></Post>
 {/if}
 

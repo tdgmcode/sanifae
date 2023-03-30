@@ -3,7 +3,7 @@
     import PostButton from '$lib/components/PostButton.svelte';
     import PostBody from '$lib/components/PostBody.svelte';
 
-    export let success, username, content, upvotes, downvotes, id, isAuthor, time;
+    export let success, username, content, upvotes, downvotes, id, isAuthor, time, overflow;
 
     let date = 'Time unknown';
 
@@ -98,7 +98,7 @@
         </p>
     </Area>
 {:else if content}
-    <Area>
+    <Area overflow={overflow}>
         <span slot="header" id='header'>
             <img class='pfp' src='/img/pfp/{username}.png'/>
             <div class='header-area'>

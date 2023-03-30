@@ -1,15 +1,44 @@
 <script>
     import PostList from '$lib/components/PostList.svelte';
     import Button from '$lib/components/Button.svelte';
+    import Dropdown from '$lib/components/Dropdown.svelte';
     import {setLocation} from '$lib/util.js';
 
     /** @type {import('./$types').PageData} */
     export let data;
 </script>
-
+    
 <span>
-    <Button clickFunc={() => { window.location.search = setLocation(window.location,'type',('all')) }}>All users</Button>
-    <Button clickFunc={() => { window.location.search = setLocation(window.location,'type',('follow')) }}>Following only</Button>
+    <Dropdown 
+        clickFunc={(val) => { window.location.search = setLocation(window.location,'type',val)}}
+        options={[
+            {
+                'key': 'all',
+                'val': 'All users',
+            },
+            {
+                'key': 'follow',
+                'val': 'Following only',
+            }
+        ]}
+    />   
+    <Dropdown 
+        clickFunc={(val) => { window.location.search = setLocation(window.location,'sort',val)}}
+        options={[
+            {
+                'key': 'hot',
+                'val': 'Hot',
+            },
+            {
+                'key': 'top',
+                'val': 'Top',
+            },
+            {
+                'key': 'new',
+                'val': 'New',
+            }
+        ]}
+    /> 
 </span>
 
-<PostList data={data} />
+<PostList data={data} noRatings={true} />
