@@ -61,9 +61,6 @@
         <a href='/new_post'>
             Create
         </a>
-        <a href='/chat/main'>
-            Chat
-        </a>
     {:else}
         <a href='/account/login'>
             Log in
@@ -72,7 +69,4 @@
             Register
         </a>
     {/if}
-    <a href='/tos'>
-        Rules
-    </a>
 </div>

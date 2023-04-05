@@ -87,18 +87,20 @@
             {/if}
         </p>
         <p>Create a post for the world to see.</p>
-        <h2>Post syntax</h2>
+        <h2>Special</h2>
         <p>
-            <b>img||file.name</b> embeds a user-uploaded file in this site
+            <b>%room</b> creates a chatroom
         </p>
+        <h2>Tagging</h2>
         <p>
             <b>@user</b> mentions a user
         </p>
         <p>
             <b>#post</b> tags a post as a reply or subtopic
         </p>
+        <h2>Formatting</h2>
         <p>
-            <b>%post</b> links to a chatroom
+            <b>img||file.name</b> embeds a user-uploaded file in this site
         </p>
         <p>
             <b>*x*</b> produces italic text
