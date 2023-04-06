@@ -7,7 +7,16 @@
     /** @type {import('./$types').PageData} */
     export let data;
 </script>
-    
+
+<style>
+    a {
+        color: var(--dark-1);
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+</style>
+
 <span>
     <Dropdown 
         clickFunc={(val) => { window.location.search = setLocation(window.location,'type',val)}}

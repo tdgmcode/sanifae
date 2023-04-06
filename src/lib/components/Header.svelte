@@ -1,9 +1,24 @@
 <script>
+    import HeaderSelect from './HeaderSelect.svelte';
+
     export let data = '';
 </script>
 
 <style>
-  
+    select {
+        padding: 0.35rem;
+        border: none;
+
+        font-family: 'Open Sans';
+
+        margin: 0;
+
+        color: white;
+        font-weight: bold;
+        font-size: 1rem;
+
+        background: var(--dark-1);
+    }
 
     #logo {
 
@@ -52,21 +67,29 @@
         </a>
     {/if}
     {#if data.username && data.username != 'false'}
-        <a href='/users/{data.username}'>
-            {data.username}
-        </a>
-        <a href='/account/logout'>
-            Log out
-        </a>
-        <a href='/new_post'>
-            Create
-        </a>
+        <HeaderSelect
+            data={[
+                {'value': '#', 'key': data.username},
+                {'value': `/users/${data.username}`, 'key': 'Profile'},
+                {'value': '/account/settings', 'key': 'Settings'},
+                {'value': '/account/logout', 'key': 'Log out'},
+            ]}
+        />
+
+        <HeaderSelect
+            data={[
+                {'value': '#', 'key': 'Create'},
+                {'value': '/new_post', 'key': 'Post'},
+                {'value': '/chat/main', 'key': 'Main chat'},
+            ]}
+        />
     {:else}
-        <a href='/account/login'>
-            Log in
-        </a>
-        <a href='/account/register'>
-            Register
-        </a>
+        <HeaderSelect
+            data={[
+                {'value': '#', 'key': 'Join Sanifae'},
+                {'value': '/account/login', 'key': 'Log in'},
+                {'value': '/account/register', 'key': 'Register'}
+            ]}
+        />
     {/if}
 </div>

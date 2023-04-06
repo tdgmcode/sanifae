@@ -116,18 +116,11 @@
                     </p>
                 </div>
                 <div>
-                    {#if data.resAcc.data == userData.username}
-                        <Form action='/api/bio' format={false}>
-                            <textarea class='follower' name='bio' on:mouseleave={inputHandler}  on:click={inputHandler} on:keydown={inputHandler}>{userData.pinned || ''}</textarea>
-                            <input type='Submit' hidden='true' bind:this={submitter}>
-                        </Form>
-                    {:else}
-                        <p class='data'>
-                            <span class='follower'>
-                                <PostBody content={userData.pinned || ''} excludeImg={true} />
-                            </span>
-                        </p>
-                    {/if}
+                    <p class='data'>
+                        <span class='follower'>
+                            <PostBody content={userData.pinned || ''} excludeImg={true} />
+                        </span>
+                    </p>
                 </div>
             </div>
 
@@ -157,16 +150,6 @@
                         </a>
                     {/each}
                 </div>
-            </div>
-
-            <div class='sections'>  
-                <div>
-                    {#if data.resAcc.data == userData.username}
-                        <h2>Set PFP</h2>
-                        <FileUpload bind:form={uploadForm} type='small' apiUrl={'/api/pfp'}/>
-                    {/if}
-                </div>
-            
             </div>
         </span>
         <span slot="footer">
