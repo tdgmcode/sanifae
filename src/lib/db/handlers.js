@@ -79,7 +79,8 @@ let fileCreate = (type) => {
         if (imgHash.length > FILE_SIZE_LIMIT)
             return {'success': 'Image too big.'}
     
-        const extensionSafe = safePath(extension);
+        const extensionSafe = safePath(extension).toLowerCase();
+        
     
         if (validExtensions.indexOf(extensionSafe) == -1)
             return { success: 'Illegal file extension. Permitted file extensions are: ' + validExtensions.join(', ') };
