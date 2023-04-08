@@ -3,7 +3,7 @@ const ROW_COUNT = 5;
 const LEGAL_SORTS = {
     'time': 'time',
     'rating': 'rating',
-    'hot': `rating / (%d - time + 24000)`
+    'hot': `rating / (%d - time + 86400000)`
 }
 
 const roles = [
