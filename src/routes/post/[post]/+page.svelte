@@ -1,12 +1,19 @@
 <script>
     import PostList from '$lib/components/PostList.svelte';
     import Post from '$lib/components/Post.svelte';
+    import Meta from '$lib/components/Meta.svelte';
 
     /** @type {import('./$types').PageData} */
     export let data;
 
     let firstEntry = data.postJson.data.shift();
+
+    let postUser = (firstEntry) ? firstEntry.username : 'Unknown User';
 </script>
+
+<svelte:head>
+	<Meta title='Post by {postUser || "Unknown user"}' />
+</svelte:head>
 
 {#if firstEntry.username}
     <Post

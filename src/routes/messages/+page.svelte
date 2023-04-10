@@ -34,11 +34,3 @@
         Any messages and notifications sent to your profile.
     </p>
 </Area>
-
-<p>
-    {#if data.id > 0}
-        <a on:click={() => { window.location.search = setLocation(window.location,'page',((data.id)-1)) }} href='#'>← Page {(data.id)-1}</a>
-    {/if}
-    <b>Page {(data.id)}</b>
-    <a on:click={() => { window.location.search = setLocation(window.location,'page',((data.id)+1)) }} href='#'>Page {(data.id)+1} →</a>
-</p> 

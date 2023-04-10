@@ -2,10 +2,8 @@
     import Button from '$lib/components/Button.svelte'
     import Area from '$lib/components/Area.svelte';
     import PostList from '$lib/components/PostList.svelte';
-    import FileUpload from '$lib/components/FileUpload.svelte';
     import PostBody from '$lib/components/PostBody.svelte';
-    import Form from '$lib/components/Form.svelte';
-
+    import Meta from '$lib/components/Meta.svelte';
 
     /** @type {import('./$types').PageData} */
     export let data;
@@ -13,6 +11,8 @@
     let uploadForm = {};
 
     let userData = data.postJsonUser.data;
+    
+    let username = userData ? (userData.username) : false;
 
     let following = data.postJsonUser.following;
     let followers = data.postJsonUser.followers;
@@ -40,6 +40,10 @@
         }
     }
 </script>
+
+<svelte:head>
+	<Meta title={username || "Unknown user"} file='/img/pfp/{username || ""}.png' />
+</svelte:head>
 
 <style>
     .follower {

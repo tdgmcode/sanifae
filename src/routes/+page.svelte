@@ -1,12 +1,16 @@
 <script>
     import PostList from '$lib/components/PostList.svelte';
-    import Button from '$lib/components/Button.svelte';
+    import Meta from '$lib/components/Meta.svelte';
     import Dropdown from '$lib/components/Dropdown.svelte';
     import {setLocation} from '$lib/util.js';
 
     /** @type {import('./$types').PageData} */
     export let data;
 </script>
+
+<svelte:head>
+	<Meta />
+</svelte:head>
 
 <style>
     a {

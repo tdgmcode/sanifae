@@ -2,6 +2,7 @@
     import { io } from 'socket.io-client'
     import { dev } from '$app/environment';
     import PostBody from '$lib/components/PostBody.svelte';
+    import Meta from '$lib/components/Meta.svelte';
 
     /** @type {import('./$types').PageData} */
     export let data;
@@ -47,6 +48,10 @@
         }
     }
 </script>
+
+<svelte:head>
+	<Meta title='Chat {id || "Unknown"}' />
+</svelte:head>
 
 <style>
     #mainChat {
