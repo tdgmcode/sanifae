@@ -6,9 +6,11 @@
     /** @type {import('./$types').PageData} */
     export let data;
 
-    let firstEntry = data.postJson.data.shift();
+    let firstEntry, postUser;
 
-    let postUser = (firstEntry) ? firstEntry.username : 'Unknown User';
+    $: firstEntry = data.postJson.data.shift();
+
+    postUser = (firstEntry) ? firstEntry.username : 'Unknown User';
 </script>
 
 <svelte:head>

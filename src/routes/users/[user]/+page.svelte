@@ -8,14 +8,16 @@
     /** @type {import('./$types').PageData} */
     export let data;
 
+    let userData, following, followers, username;
+
     let uploadForm = {};
 
-    let userData = data.postJsonUser.data;
+    $: userData = data.postJsonUser.data;
     
-    let username = userData ? (userData.username) : false;
+    $: username = userData ? (userData.username) : false;
 
-    let following = data.postJsonUser.following;
-    let followers = data.postJsonUser.followers;
+    $: following = data.postJsonUser.following;
+    $: followers = data.postJsonUser.followers;
 
     let submitter;
 

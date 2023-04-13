@@ -12,7 +12,7 @@
         margin-bottom: 0rem;
     }
 
-    .button a {
+    .button span {
         color: var(--dark-1);
         font-weight: bold;
         font-size: 1rem;
@@ -26,5 +26,5 @@
 </script>
 
 <button on:click={clickFunc} class='button'>
-    <a href='#'><slot/></a>
+    <span><slot/></span>
 </button>
