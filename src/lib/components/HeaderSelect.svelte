@@ -22,7 +22,7 @@
 
 <select bind:value={val} on:change={() => window.location = val}>
     {#each data as entry}
-        <option value={entry.value} selected={entry.value == '#'} >
+        <option value={entry.value} disabled={entry.value == data[0].value} selected={entry.value == '#'} >
             {entry.key}
         </option>
     {/each}

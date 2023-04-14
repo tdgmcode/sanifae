@@ -31,12 +31,21 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        align-items: center;
+        justify-content: space-between;
 
         position: sticky;
         top: 0;
         
         z-index: 10;
+    }
+
+    #logo div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-left: 25px;
+        margin-right: 25px;
     }
 
     #logo a {
@@ -54,42 +63,47 @@
 </style>
 
 <div id='logo'>
-    <a href='/'>
-        <img src='/icon_sanifae.svg' alt='Sanifae Logo'>
-    </a>
-    {#if data.read > 0}
-        <a href='/messages'>
-            <img src='/unread.svg' alt='Messages'>
+    <div>
+        <a href='/'>
+            <img src='/icon_sanifae.svg' alt='Sanifae Logo'>
         </a>
-    {:else}
-        <a href='/messages'>
-            <img src='/read.svg' alt='Messages'>
-        </a>
-    {/if}
-    {#if data.username && data.username != 'false'}
-        <HeaderSelect
-            data={[
-                {'value': '#', 'key': data.username},
-                {'value': `/users/${data.username}`, 'key': 'Profile'},
-                {'value': '/account/settings', 'key': 'Settings'},
-                {'value': '/account/logout', 'key': 'Log out'},
-            ]}
-        />
-
-        <HeaderSelect
-            data={[
-                {'value': '#', 'key': 'Create'},
-                {'value': '/new_post', 'key': 'Post'},
-                {'value': '/chat/main', 'key': 'Main chat'},
-            ]}
-        />
-    {:else}
-        <HeaderSelect
-            data={[
-                {'value': '#', 'key': 'Join Sanifae'},
-                {'value': '/account/login', 'key': 'Log in'},
-                {'value': '/account/register', 'key': 'Register'}
-            ]}
-        />
-    {/if}
+        {#if data.username && data.username != 'false'}
+            <a href='/new_post'>
+                Post
+            </a>
+            <a href='/chat/main'>
+                Main chat
+            </a>
+        {/if}
+    </div>
+    <div> 
+        {#if data.username && data.username != 'false'}
+            <HeaderSelect
+                data={[
+                    {'value': '#', 'key': data.username},
+                    {'value': `/users/${data.username}`, 'key': 'Profile'},
+                    {'value': '/account/settings', 'key': 'Settings'},
+                    {'value': '/account/logout', 'key': 'Log out'},
+                ]}
+            />  
+        {:else}
+            <HeaderSelect
+                data={[
+                    {'value': '#', 'key': 'Join Sanifae'},
+                    {'value': '/account/login', 'key': 'Log in'},
+                    {'value': '/account/register', 'key': 'Register'}
+                ]}
+            />
+        {/if}
+        {#if data.read > 0}
+            <a href='/messages'>
+                <img src='/unread.svg' alt='Messages'>
+            </a>
+        {:else}
+            <a href='/messages'>
+                <img src='/read.svg' alt='Messages'>
+            </a>
+        {/if}
+    </div>
+        
 </div>

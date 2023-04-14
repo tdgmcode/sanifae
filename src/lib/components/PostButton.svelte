@@ -25,7 +25,7 @@
 </script>
 
 <span class='vote-area'>
-    <a on:click={clickFunc} href='{href}'>
+    <a on:click|preventDefault={clickFunc} href='{href}'>
         <img src='{icon}' class='button' alt='Vote button'>
     </a>
     <div class='votes'>

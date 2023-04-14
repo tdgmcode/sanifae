@@ -79,6 +79,11 @@
         font-weight: normal;
     }
 
+    .black {
+        color: black;
+    }
+
+
     .votes {
         display: flex;
         
@@ -98,15 +103,18 @@
         </p>
     </Area>
 {:else if content}
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<a class='black' href='/post/{id}'>
     <Area overflow={overflow}>
         <span slot="header" id='header'>
+            <!-- svelte-ignore a11y-missing-attribute -->
             <img class='pfp' src='/img/pfp/{username}.png'/>
             <div class='header-area'>
                 <div><a href='/users/{username}'>
                     {username}
                 </a></div>
                 <div class='date'>
-                    {date}
+                    Posted on {date}
                 </div>
             </div>
         </span>
@@ -136,13 +144,6 @@
                     icon='/edit.svg'
                 />
             {/if}
-            {#if id}
-                <PostButton
-                    href='/post/{id}'
-                    data={''}
-                    icon='/view.svg'
-                />
-            {/if}
             <PostButton
                 href='/new_post?init=%23{id}'
                 data={''}
@@ -150,4 +151,5 @@
             />
         </span>
     </Area>
+</a>
 {/if}

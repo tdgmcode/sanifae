@@ -36,6 +36,7 @@
     console.log(contentSplit);
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <span>
     {#each contentSplit as line}
         <p>

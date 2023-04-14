@@ -32,7 +32,7 @@
         <option disabled selected value> {selectedKey}</option>
     {/if}
     {#each options as option}
-        <option value={option.key} selected={option.key == selectedKey}>{option.val}</option>
+        <option value={option.key} selected={option.key == selectedKey} >{option.val}</option>
     {/each}
     <slot />
 </select>
