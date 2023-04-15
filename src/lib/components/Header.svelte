@@ -72,7 +72,7 @@
                 Post
             </a>
             <a href='/chat/main'>
-                Main chat
+                Chat
             </a>
         {/if}
     </div>

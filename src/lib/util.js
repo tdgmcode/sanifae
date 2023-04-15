@@ -17,7 +17,7 @@ const formats = [
 const postTypes = {
     '@': 'users',
     '#': 'post',
-    '%': 'chat'
+    '%': 'chat',
 }
 
 let checkLength = function(string, field, lowerBound, upperBound) {

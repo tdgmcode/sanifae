@@ -60,7 +60,8 @@ async function initDb() {
         downvotes INTEGER, \
         rating REAL, \
         reply CHAR(64), \
-        time INTEGER \
+        time INTEGER, \
+        tetra CHAR(64) \
     )');
 
     await db.run('CREATE TABLE IF NOT EXISTS tag ( \

@@ -5,6 +5,8 @@
 
     export let success, username, content, upvotes, downvotes, id, isAuthor, time, overflow;
 
+    let clicked = true;
+    
     let date = 'Time unknown';
 
     if (time)
@@ -121,34 +123,47 @@
         <span slot="main">
             <PostBody content={content} />
         </span>
-        <span slot="footer" class='votes'>
-            <PostButton
-                clickFunc={() => vote('up')}
-                data={upvotes * 1}
-                icon='/upvote.svg'
-            />
-            <PostButton
-                clickFunc={() => vote('down')}
-                data={downvotes * 1 }
-                icon='/downvote.svg'
-            />
+        <span slot="footer">
+            <span class='votes'>
+                <PostButton
+                    clickFunc={() => vote('up')}
+                    data={upvotes * 1}
+                    icon='/upvote.svg'
+                />
+                <PostButton
+                    clickFunc={() => vote('down')}
+                    data={downvotes * 1 }
+                    icon='/downvote.svg'
+                />
+                <PostButton
+                    href='/new_post?init=%23{id}'
+                    data={''}
+                    icon='/reply.svg'
+                />
+            </span>
             {#if isAuthor}
-                <PostButton
-                    clickFunc={() => deletePost()}
-                    data={''}
-                    icon='/delete.svg'
-                />
-                <PostButton
-                    href='/new_post?edit={id}&init={encodeURIComponent(content)}'
-                    data={''}
-                    icon='/edit.svg'
-                />
+                <span class='votes' >
+                    <PostButton
+                        clickFunc={() => clicked = !clicked}
+                        data={'Actions'}
+                        icon='/delete.svg'
+                    />
+                    <span hidden={clicked}>
+                        <PostButton
+                            clickFunc={() => deletePost()}
+                            data={'Delete'}
+                            icon='/delete.svg'
+                        />
+                    </span>
+                    <span hidden={clicked}>
+                        <PostButton
+                            href='/new_post?edit={id}&init={encodeURIComponent(content)}'
+                            data={'Edit'}
+                            icon='/edit.svg'
+                        />
+                    </span>
+                </span>
             {/if}
-            <PostButton
-                href='/new_post?init=%23{id}'
-                data={''}
-                icon='/reply.svg'
-            />
         </span>
     </Area>
 </a>

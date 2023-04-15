@@ -44,6 +44,11 @@
     .wrapper {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .barrier {
+        width: 20px;
     }
 </style>
 
@@ -52,6 +57,16 @@
         Create Post
     </p>
     <div class='main' slot='main'>
+        <div class='wrapper'>
+            <Button clickFunc={() => { setState('upload')}}>Media</Button>
+            <div class='barrier'></div>
+            <Button clickFunc={() => { formContent += ' *Italic*'}}><i>Italics</i></Button>
+            <Button clickFunc={() => { formContent += ' **Bold**'}}>Bold</Button>
+            <div class='barrier'></div>
+            <Button clickFunc={() => { formContent += ' #main'}}>#Tag</Button>
+            <Button clickFunc={() => { formContent += ' @tdgmdev'}}>@User</Button> 
+            <Button clickFunc={() => { formContent += ' %main'}}>%Chatroom</Button>     
+        </div>
         <form action='/api/postCreate' 
             method='POST' 
             on:submit|preventDefault={async e => form = JSON.parse(await handleSubmit(e)) }
@@ -69,14 +84,13 @@
                 <FileUpload bind:form={uploadForm} />
             {/if}
         </form>
-    </div>
-    <span slot="footer">
         <div class='wrapper'>
             <Button clickFunc={() => { setState('editor')}}>Edit</Button>
             <Button clickFunc={() => { setState('visual')}}>View</Button>
-            <Button clickFunc={() => { setState('upload')}}>Upload file</Button>
             <Button clickFunc={() => formBody.click()}>Create</Button>
         </div>
+    </div>
+    <span slot="footer">
         <p>
             {#if form?.success}
                 {#if form?.href}
@@ -87,26 +101,5 @@
             {/if}
         </p>
         <p>Create a post for the world to see.</p>
-        <h2>Special</h2>
-        <p>
-            <b>%room</b> creates a chatroom
-        </p>
-        <h2>Tagging</h2>
-        <p>
-            <b>@user</b> mentions a user
-        </p>
-        <p>
-            <b>#post</b> tags a post as a reply or subtopic
-        </p>
-        <h2>Formatting</h2>
-        <p>
-            <b>img||file.name</b> embeds a user-uploaded file in this site
-        </p>
-        <p>
-            <b>*x*</b> produces italic text
-        </p>
-        <p>
-            <b>**x**</b> produces bolded text
-        </p>
     </span>
 </Area>

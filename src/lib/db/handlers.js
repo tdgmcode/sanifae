@@ -192,6 +192,9 @@ backend.postCreate = async ({content, edit}, {user,db}) => {
     var reply = postFlatten.filter(x => x.subtype == 'post').map(x => x.url.split('/').pop());
     var firstReply = reply[0];
 
+    var mentioned = postFlatten.filter(x => x.subtype == 'users').map(x => x.url.split('/').pop())
+        .reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+
     await db.run('DELETE from tag WHERE id = ?', [
         id
     ])
@@ -213,7 +216,15 @@ backend.postCreate = async ({content, edit}, {user,db}) => {
                 0
             ]);
         }
+    }
 
+    for (var i = 0; i < mentioned.length; i++) {
+        await db.run('INSERT INTO messages (username, content, time,read) VALUES (?, ?, ?, ?)', [
+            mentioned[i],
+            `@${user} mentioned you at #${id}`,
+            Math.floor(new Date() * 1000),
+            0
+        ]);
     }
         
     if (id === edit) {
