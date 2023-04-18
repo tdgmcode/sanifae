@@ -147,7 +147,7 @@ let formatPost = function(post, ignoreImg) {
                     return splitPost;
                 }
             } else if (postTypes[subPost[0] + '']) {
-                var subPostIn = safeName(subPost.substring(0));
+                var subPostIn = safePath(subPost.substring(0));
 
                 var type = postTypes[subPost[0]];
 
