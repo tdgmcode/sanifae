@@ -1,13 +1,14 @@
 <script>
     import { io } from 'socket.io-client'
-    import { dev } from '$app/environment';
+    import { dev, browser } from '$app/environment';
     import PostBody from '$lib/components/PostBody.svelte';
     import Meta from '$lib/components/Meta.svelte';
 
     /** @type {import('./$types').PageData} */
     export let data;
 
-    let id = data.id;
+    let id;
+    $: id = data.id;
     let messages = [];
     let input;
 
@@ -19,18 +20,30 @@
         socket = io('https://ws.tdgmdev.net/');
     }
     
-
-    socket.emit('join',id);
+    $: if (id) {
+        messages = [];
+        socket.emit('join',id,data.token);
+    }
 
     function scroll() {
         setTimeout(function() {
-            if (input && input.lastChild)
+            if (input)
+                input.scrollIntoView();
+            
+            if (input && input.lastChild && input.lastChild.scrollIntoView)
                 input.lastChild.scrollIntoView()
         },200);
     }
 
     socket.on('load', (message) => {
-        messages = message;
+        if (!message || message.success) {
+            messages = [{
+                'username': '!!SYSMSG',
+                'content': 'An error ocurred: ' + ((message && message.success) ? message.success : 'Unknown error')
+            }]
+            return;
+        }
+        messages = [...messages, ...message];
         scroll();
     })
 
@@ -47,6 +60,17 @@
 
         }
     }
+
+    let channels = [];
+
+    $: if (id && browser) {
+        channels = JSON.parse(localStorage.getItem('channels')) || ["main"];
+
+        if (channels.indexOf(id) == -1) channels.push(id);
+
+        localStorage.setItem('channels',JSON.stringify(channels));
+    }
+    
 </script>
 
 <svelte:head>
@@ -55,10 +79,21 @@
 
 <style>
     #mainChat {
-        height: 100%;
-        width: calc(100vw - 30px);
-        padding: 15px;
+
+        height: 100vh;
+        width: 100%;
         overflow: auto;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    #wrapper {
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
     }
 
     #mainInput {
@@ -96,23 +131,53 @@
     #mainChat {
         background: var(--light-1);
     }
+
+    .message {
+        margin-left: 15px;
+    }
+
+    .lmenu {
+        height: 100px;
+        background: white;
+        display: flex;
+        align-items: center;
+        overflow-x: auto;
+    }
+
+    .lmenu a {
+        color: black;
+        font-weight: bold;
+        margin: 10px;
+    }
+
+    .minor {
+        background: var(--dark-2);
+    }
 </style>
 
-<div id='mainChat' bind:this={input}>
-    {#each messages as message}
-        <div class='message'>
-            <div id='header'>
-                <img class='pfp' src='/img/pfp/{message.username}.png'/>
-                <div><a href='/users/{message.username}'>
-                    {message.username}
-                </a></div>
-                <div class='date'>
-                    {(new Date(message.time / 1000) + '').split('GMT')[0]}
+<div id='wrapper'>
+    <div class='lmenu minor'>
+        {#each channels as channel} 
+            <a href='/chat/{channel}'>%{channel}</a>
+        {/each}
+    </div>
+    <div id='mainChat' bind:this={input}>
+        <div class='message'></div>
+        {#each messages as message}
+            <div class='message'>
+                <div id='header'>
+                    <img class='pfp' src='/img/pfp/{message.username}.png'/>
+                    <div><a href='/users/{message.username}'>
+                        {message.username}
+                    </a></div>
+                    <div class='date'>
+                        {(new Date(message.time / 1000) + '').split('GMT')[0]}
+                    </div>
                 </div>
+                <PostBody content={message.content}></PostBody>
             </div>
-            <PostBody content={message.content}></PostBody>
-        </div>
-    {/each}
+        {/each}
+    </div>  
+    <div id="mainInput" contenteditable="" autocomplete="off"  on:keydown={inputHandler}></div>  
 </div>
 
-<div id="mainInput" contenteditable="" autocomplete="off"  on:keydown={inputHandler}></div>

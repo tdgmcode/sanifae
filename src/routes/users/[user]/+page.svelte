@@ -110,6 +110,11 @@
                 <Button clickFunc={follow}>
                     Follow
                 </Button>
+                <a href='/chat/msg:{[userData.username,data.resAcc.data].sort().join(':')}'>
+                    <Button clickFunc={follow}>
+                        Message
+                    </Button>
+                </a>
             </div>
         </span>
         <span slot="main">

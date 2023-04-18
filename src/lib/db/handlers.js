@@ -512,6 +512,13 @@ backend.messages = async ({isRead}, {user, db}) => {
 backend.chatAdd = async ({content, room}, {user,db}) => {
     if (!content) return {'success': 'No message provided.'}
 
+    if (room.startsWith('msg:')) {
+        let users = room.split(':');
+        if (users.indexOf(user) < 1 || user == '') {
+            return {data: {'success': 'You were not invited.'}};
+        }
+    }
+
     var lengthCheck = checkLength(content,'Post content',1,10240);
 
     if (lengthCheck)
@@ -530,6 +537,13 @@ backend.chatAdd = async ({content, room}, {user,db}) => {
 }
 
 backend.chatGet = async ({room}, {user,db}) => {
+    if (room.startsWith('msg:')) {
+        let users = room.split(':');
+        if (users.indexOf(user) < 1 || user == '') {
+            return {data: {'success': 'You were not invited.'}};
+        }
+    }
+
     let messages = await db.all('SELECT * from chat WHERE room = ? ORDER BY time LIMIT 1000', [
         room
     ])

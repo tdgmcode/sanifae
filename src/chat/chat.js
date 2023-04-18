@@ -9,14 +9,14 @@ function configureServer(server) {
     });
     
     io.on('connection', (socket) => {
-        socket.on('join', async (id) => {
+        socket.on('join', async (id,token) => {
             socket.join(id);
 
             let api = await backendProxy({
                 route: 'chatGet',
                 backendParams: {
                     room: id,
-                    token: 1
+                    token: token || '4'
                 }
             });
 
@@ -26,7 +26,7 @@ function configureServer(server) {
             let api = await backendProxy({
                 route: 'chatAdd',
                 backendParams: {
-                    token,
+                    token: token || '4',
                     content,
                     room
                 }
