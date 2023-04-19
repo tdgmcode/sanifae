@@ -37,17 +37,11 @@ let updateUser = async ({user},{db}) => {
         downvotes += post.downvotes || 0;
     });
 
-    await db.run('DELETE FROM user WHERE username = ?', [
-        user
-    ]);
-
-    await db.run('INSERT INTO user (username,followers,following,upvotes,downvotes,reputation) VALUES (?,?,?,?,?,?)', [
-        user,
-        0,
-        0,
+    await db.run('UPDATE USER SET upvotes = ?, downvotes = ?, reputation = ? WHERE username = ?', [
         upvotes,
         downvotes,
-        calcVote(upvotes,downvotes,'user')
+        calcVote(upvotes,downvotes,'user'),
+        user
     ]);
 }
 
@@ -282,6 +276,8 @@ backend.postDelete = async ({id}, {user, admin, db}) => {
             id
         ])
     }
+
+    await updateUser({user: user}, {db});
 
     return {'success': 'Your post has been deleted!', 'href': `/post/${id}` };
 }
