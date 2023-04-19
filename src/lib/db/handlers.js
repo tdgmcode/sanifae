@@ -37,7 +37,7 @@ let updateUser = async ({user},{db}) => {
         downvotes += post.downvotes || 0;
     });
 
-    await db.run('UPDATE USER SET upvotes = ?, downvotes = ?, reputation = ? WHERE username = ?', [
+    await db.run('UPDATE user SET upvotes = ?, downvotes = ?, reputation = ? WHERE username = ?', [
         upvotes,
         downvotes,
         calcVote(upvotes,downvotes,'user'),
@@ -128,6 +128,10 @@ backend.register = async ({user, pass, pass2},{db}) => {
     await db.run('INSERT INTO auth (username, password) VALUES (?, ?)', [
         user,
         passHash
+    ])
+
+    await db.run('INSERT INTO USER (username) VALUES (?)', [
+        user
     ])
 
     await updateUser({user: user}, {db});
