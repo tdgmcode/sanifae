@@ -116,7 +116,7 @@ backend.register = async ({user, pass, pass2},{db}) => {
 
     if (pass != pass2) return {'success': 'Passwords don\'t match.'};
 
-    var existingAccounts = await db.all('SELECT username FROM auth WHERE username = ?',[
+    var existingAccounts = await db.all('SELECT username FROM auth WHERE UPPER(username) LIKE UPPER(?)',[
         user
     ]);
 
