@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageLoad} */
-export async function load({ fetch }) {
+export async function load({ fetch, params }) {
     const res = await fetch(`/api/token`);
 
     const username = await res.json();
@@ -7,5 +7,5 @@ export async function load({ fetch }) {
     const res2 = await fetch(`/api/messages`);
     const read = (await res2.json()).data.read;
 
-    return { username: username.data, read };
+    return { username: username.data, read, show: !params.chat };
 }

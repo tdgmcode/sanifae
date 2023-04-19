@@ -33,7 +33,7 @@
 
     #main {
         min-height: 250px;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 
     #main.overflow {

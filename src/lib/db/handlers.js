@@ -471,7 +471,7 @@ backend.follow = async ({target}, {user, db}) => {
 
     await db.run('INSERT INTO messages (username, content, time,read) VALUES (?, ?, ?, ?)', [
         target,
-        `@${user} ${unfollowed ? 'is now following' : 'unfollowed'} you`,
+        `@${user} ${(!unfollowed) ? 'is now following' : 'unfollowed'} you`,
         Math.floor(new Date() * 1000),
         0
     ]);

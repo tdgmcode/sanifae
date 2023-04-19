@@ -51,7 +51,9 @@
 </script>
 
 <div id='content'>
-    <Header data={data} />
+    {#if data.show}
+        <Header data={data} />
+    {/if}
     <slot />
 </div>
 

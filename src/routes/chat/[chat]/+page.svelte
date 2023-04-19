@@ -66,7 +66,7 @@
     $: if (id && browser) {
         channels = JSON.parse(localStorage.getItem('channels')) || ["main"];
 
-        if (channels.indexOf(id) == -1) channels.push(id);
+        if (channels.indexOf(id) == -1) channels.insert(1,id);
 
         localStorage.setItem('channels',JSON.stringify(channels));
     }
@@ -146,8 +146,13 @@
 
     .lmenu a {
         color: black;
-        font-weight: bold;
         margin: 10px;
+    }
+
+    .lmenu a:before {
+        content: '%';
+        font-weight: bold;
+        font-size: 1.3em;
     }
 
     .minor {
@@ -158,7 +163,7 @@
 <div id='wrapper'>
     <div class='lmenu minor'>
         {#each channels as channel} 
-            <a href='/chat/{channel}'>%{channel}</a>
+            <a href='/chat/{channel}'>{channel}</a>
         {/each}
     </div>
     <div id='mainChat' bind:this={input}>
