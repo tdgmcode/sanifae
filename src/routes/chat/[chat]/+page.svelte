@@ -66,7 +66,7 @@
     $: if (id && browser) {
         channels = JSON.parse(localStorage.getItem('channels')) || ["main"];
 
-        if (channels.indexOf(id) == -1) channels.insert(1,id);
+        if (channels.indexOf(id) == -1) channels.push(id);
 
         localStorage.setItem('channels',JSON.stringify(channels));
     }
