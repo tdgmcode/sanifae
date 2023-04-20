@@ -18,16 +18,22 @@
 </style>
 
 <script>
-    export let clickFunc = () => {};
+    export let clickFunc = false;
     export let href = '#';
     export let data = ' ';
     export let icon = '/upvote.svg';
 </script>
 
 <span class='vote-area'>
-    <a on:click|preventDefault={clickFunc} href='{href}'>
-        <img src='{icon}' class='button' alt='Vote button'>
-    </a>
+    {#if clickFunc}
+        <a on:click|preventDefault={clickFunc} href='{href}'>
+            <img src='{icon}' class='button' alt='Vote button'>
+        </a>
+    {:else}
+        <a href='{href}'>
+            <img src='{icon}' class='button' alt='Vote button'>
+        </a>
+    {/if}
     <div class='votes'>
         {data}
     </div>
