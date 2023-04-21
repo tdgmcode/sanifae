@@ -187,7 +187,9 @@ backend.postCreate = async ({content, edit}, {user,db}) => {
         id = edit;
 
     var postFlatten = formatPost(content).flat();
-    var reply = postFlatten.filter(x => x.subtype == 'post').map(x => x.url.split('/').pop());
+    var reply = postFlatten.filter(x => x.subtype == 'post').map(x => x.url.split('/').pop())
+        .reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+
     var firstReply = reply[0];
 
     var mentioned = postFlatten.filter(x => x.subtype == 'users').map(x => x.url.split('/').pop())
