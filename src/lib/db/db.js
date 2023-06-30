@@ -106,6 +106,30 @@ async function initDb() {
     )');  
 }
 
+let getToken = async (cookies, fetch) => {
+    const token = cookies.get('token');
+
+    let username;
+    if (!token) {
+        username = '???'
+    } else {
+        username = await fetch('https://auth.montidg.net/api/account/token/', {
+            'method': 'POST',
+            'headers': {
+                "Content-Type": "application/json",
+            },
+            'body': JSON.stringify({
+                token: token,
+                scope: 'sanifae'
+            })
+        }).then(x => x.json());
+        if (!username.data || username.data.length < 1) return '???';
+        username = username.data[0].username;
+    }
+
+    return username;
+}
+
 let backendProxy = async ({route, backendParams}) => {
     if (!db) await initDb();
 
@@ -118,9 +142,7 @@ let backendProxy = async ({route, backendParams}) => {
     if (backendParams.token)
         jason.token = backendParams.token;
 
-    let user = (await backend.token(jason,extraParams)) || {};
-
-    user = user.data;
+    let user = await getToken(backendParams.cookies, backendParams.fetch);
 
     console.log(user);
     

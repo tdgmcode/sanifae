@@ -1,5 +1,8 @@
 <script>
     import HeaderSelect from './HeaderSelect.svelte';
+    import { page } from '$app/stores';  
+
+    let path = $page.url.origin;
 
     export let data = '';
 </script>
@@ -90,8 +93,7 @@
             <HeaderSelect
                 data={[
                     {'value': '#', 'key': 'Join Sanifae'},
-                    {'value': '/account/login', 'key': 'Log in'},
-                    {'value': '/account/register', 'key': 'Register'}
+                    {'value': 'https://auth.montidg.net/account/auth?scope=sanifae&next='+path+'/account/auth', 'key': 'Log in'}
                 ]}
             />
         {/if}

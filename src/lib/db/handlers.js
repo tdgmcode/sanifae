@@ -24,6 +24,7 @@ import { calcVote, checkLength, checkRegex, safePath, formatPost } from '../util
 
 var ridArray = {};
 
+
 let updateUser = async ({user},{db}) => {
     let allPosts = await db.all('SELECT * from post WHERE username = ?', [
         user
@@ -551,6 +552,35 @@ backend.chatGet = async ({room}, {user,db}) => {
     ])
 
     return {'data': messages};
+}
+
+backend.token = async ({}, {user, db}) => {
+    let authExists = await db.all('SELECT * FROM auth WHERE username = ?', [
+        user
+    ]);
+
+    if (authExists && authExists.length > 0) return {'success': 'You can\'t log into a legacy account!'};
+
+    if (user === '???' || !user) return {'success': 'Account not authenticated.'};
+    return {'success': 'success', 'username': user};
+};
+
+backend.auth = async ({}, {user, db}) => {
+    if (user === '???' || !user) return {'success': 'Account not authenticated.'};
+
+    let userExists = await db.all('SELECT * FROM user WHERE username = ?', [
+        user
+    ]);
+
+    if (userExists && userExists.length > 0) return {'success': 'success', 'username': user};
+
+    await db.run('INSERT INTO user (username) VALUES (?)',[
+        user
+    ]);
+
+    await updateUser({user: user}, {db});
+
+    return {'success': 'success', 'username': user};
 }
 
 export {

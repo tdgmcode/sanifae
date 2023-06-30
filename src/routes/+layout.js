@@ -7,5 +7,5 @@ export async function load({ fetch, params }) {
     const res2 = await fetch(`/api/messages`);
     const read = (await res2.json()).data.read;
 
-    return { username: username.data, read, show: !params.chat };
+    return { username: username.username, read, show: !params.chat };
 }
