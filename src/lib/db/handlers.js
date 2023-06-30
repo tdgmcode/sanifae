@@ -12,9 +12,9 @@ const roles = [
     'Veteran'
 ]
 
-const FILE_SIZE_LIMIT = 1024*1024*16;
+const FILE_SIZE_LIMIT = 1024 * 1024 * 16;
 
-const VALID_EXTENSIONS = ['png','jpg','jpeg','gif','svg', 'mp4', 'mov'];
+const VALID_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'mp4', 'mov'];
 
 
 import { hash, compare } from 'bcrypt'
@@ -25,7 +25,7 @@ import { calcVote, checkLength, checkRegex, safePath, formatPost } from '../util
 var ridArray = {};
 
 
-let updateUser = async ({user},{db}) => {
+let updateUser = async ({ user }, { db }) => {
     let allPosts = await db.all('SELECT * from post WHERE username = ?', [
         user
     ]);
@@ -41,13 +41,13 @@ let updateUser = async ({user},{db}) => {
     await db.run('UPDATE user SET upvotes = ?, downvotes = ?, reputation = ? WHERE username = ?', [
         upvotes,
         downvotes,
-        calcVote(upvotes,downvotes,'user'),
+        calcVote(upvotes, downvotes, 'user'),
         user
     ]);
 }
 
 let fileCreate = (type) => {
-    return async ({img, extension,id, last}, {user}) => {
+    return async ({ img, extension, id, last }, { user }) => {
         let validExtensions = VALID_EXTENSIONS;
 
         if (type == 'pfp') validExtensions = ['png'];
@@ -57,74 +57,74 @@ let fileCreate = (type) => {
         } else {
             ridArray[id] += img;
         }
-    
+
         const imgData = ridArray[id];
-    
+
         if (last != 'true') {
-            return {'success': 'Image still proccessing...'}
+            return { 'success': 'Image still proccessing...' }
         } else {
             ridArray[id] = false;
         }
-    
+
         const imgHash = createHash('md5').update(imgData).digest('hex');
-    
+
         if (!imgHash)
-            return {'success': 'Image not provided.'}
-    
+            return { 'success': 'Image not provided.' }
+
         if (imgHash.length > FILE_SIZE_LIMIT)
-            return {'success': 'Image too big.'}
-    
+            return { 'success': 'Image too big.' }
+
         const extensionSafe = safePath(extension).toLowerCase();
-        
-    
+
+
         if (validExtensions.indexOf(extensionSafe) == -1)
             return { success: 'Illegal file extension. Permitted file extensions are: ' + validExtensions.join(', ') };
-    
+
         let fileName = (type == 'post') ? `upload/${imgHash}.${extensionSafe}` : `pfp/${user}.png`
 
-        writeFile(`${process.cwd()}/db/files/${fileName}`,imgData,{encoding: 'base64'});
-    
-        return { success: 'Successfully uploaded file.', 'href': `/img/${imgHash}.${extensionSafe}`};
-    }    
-} 
+        writeFile(`${process.cwd()}/db/files/${fileName}`, imgData, { encoding: 'base64' });
+
+        return { success: 'Successfully uploaded file.', 'href': `/img/${imgHash}.${extensionSafe}` };
+    }
+}
 
 var backend = {};
 
 backend.fileCreate = fileCreate('post');
 backend.pfp = fileCreate('pfp');
 
-backend.userRoles = async ({user},{db}) => {
+backend.userRoles = async ({ user }, { db }) => {
     var rolesLocal = await db.all('SELECT roles from user WHERE username = ?', [
         user
-    ] );
+    ]);
 
     if (rolesLocal.length == 0) rolesLocal = [{}];
-    
+
     let rolesLocalList = rolesLocal[0].roles;
 
-    return roles.filter((elem,i) => ((rolesLocalList % (1<<(i+1))) > ((1<<i) - 1)) );
+    return roles.filter((elem, i) => ((rolesLocalList % (1 << (i + 1))) > ((1 << i) - 1)));
 };
 
-backend.register = async ({user, pass, pass2},{db}) => {
+backend.register = async ({ user, pass, pass2 }, { db }) => {
     var lengthCheck = false;
 
-    lengthCheck = 
-      checkLength(pass,'Password',4,1024) ||
-      checkLength(user,'Username',1,64) ||
-      checkRegex(user,'Username',/[^A-Za-z0-9\-\_]/g);
+    lengthCheck =
+        checkLength(pass, 'Password', 4, 1024) ||
+        checkLength(user, 'Username', 1, 64) ||
+        checkRegex(user, 'Username', /[^A-Za-z0-9\-\_]/g);
 
     if (lengthCheck) return lengthCheck;
 
-    if (pass != pass2) return {'success': 'Passwords don\'t match.'};
+    if (pass != pass2) return { 'success': 'Passwords don\'t match.' };
 
-    var existingAccounts = await db.all('SELECT username FROM auth WHERE UPPER(username) LIKE UPPER(?)',[
+    var existingAccounts = await db.all('SELECT username FROM auth WHERE UPPER(username) LIKE UPPER(?)', [
         user
     ]);
 
     if (existingAccounts && existingAccounts.length > 0)
         return { success: 'Account already exists.' };
 
-    var passHash = await hash(pass,10);
+    var passHash = await hash(pass, 10);
 
     await db.run('INSERT INTO auth (username, password) VALUES (?, ?)', [
         user,
@@ -135,22 +135,22 @@ backend.register = async ({user, pass, pass2},{db}) => {
         user
     ])
 
-    await updateUser({user: user}, {db});
+    await updateUser({ user: user }, { db });
 
-    return { success: 'Successfully created account.', location: '/'};
+    return { success: 'Successfully created account.', location: '/' };
 }
 
-backend.login = async ({user, pass, cookies},{db}) => {
-    var existingAccounts = await db.all('SELECT username, password FROM auth WHERE username = ?',[
+backend.login = async ({ user, pass, cookies }, { db }) => {
+    var existingAccounts = await db.all('SELECT username, password FROM auth WHERE username = ?', [
         user
     ]);
 
     if (!existingAccounts || existingAccounts.length < 1)
         return { success: 'Account does not exist.' };
 
-    var passHash = await compare(pass,existingAccounts[0].password);
+    var passHash = await compare(pass, existingAccounts[0].password);
 
-    if (!passHash) 
+    if (!passHash)
         return { success: 'Incorrect password.' };
 
     var token = randomBytes(256).toString('hex');
@@ -161,19 +161,19 @@ backend.login = async ({user, pass, cookies},{db}) => {
     ])
 
     if (token) {
-        cookies.set('token',token, {
-          maxAge: 60 * 60 * 24 * 7,
-          path: '/'
+        cookies.set('token', token, {
+            maxAge: 60 * 60 * 24 * 7,
+            path: '/'
         });
     };
 
-    return { success: 'Successfully logged into account.', data: token, location: '/'};
+    return { success: 'Successfully logged into account.', data: token, location: '/' };
 }
 
-backend.postCreate = async ({content, edit}, {user,db}) => {
-    if (!content) return {'success': 'No post provided.'}
+backend.postCreate = async ({ content, edit }, { user, db }) => {
+    if (!content) return { 'success': 'No post provided.' }
 
-    var lengthCheck = checkLength(content,'Post content',1,10240);
+    var lengthCheck = checkLength(content, 'Post content', 1, 10240);
 
     if (lengthCheck)
         return lengthCheck;
@@ -189,12 +189,12 @@ backend.postCreate = async ({content, edit}, {user,db}) => {
 
     var postFlatten = formatPost(content).flat();
     var reply = postFlatten.filter(x => x.subtype == 'post').map(x => x.url.split('/').pop())
-        .reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+        .reduce(function (a, b) { if (a.indexOf(b) < 0) a.push(b); return a; }, []);
 
     var firstReply = reply[0];
 
     var mentioned = postFlatten.filter(x => x.subtype == 'users').map(x => x.url.split('/').pop())
-        .reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+        .reduce(function (a, b) { if (a.indexOf(b) < 0) a.push(b); return a; }, []);
 
     await db.run('DELETE from tag WHERE id = ?', [
         id
@@ -227,40 +227,40 @@ backend.postCreate = async ({content, edit}, {user,db}) => {
             0
         ]);
     }
-        
+
     if (id === edit) {
         await db.run('UPDATE post SET content = ? WHERE id = ?', [
             content,
             id
         ])
-    
+
     } else {
         await db.run('INSERT INTO post (username, id, content, rating, reply, time) VALUES (?, ?, ?, ?, ?, ?)', [
             user,
             id,
             content,
-            calcVote(0,0),
+            calcVote(0, 0),
             firstReply || '',
             Math.floor(new Date() * 1000)
         ])
-    
+
     }
 
-    
+
     for (var i = 0; i < reply.length; i++) {
         await db.run('INSERT INTO tag (id, reply) VALUES (?, ?)', [
             id,
             reply[i]
         ])
     }
-    
 
-    return {'success': 'Your post has been broadcasted!', 'href': `/post/${id}` };
+
+    return { 'success': 'Your post has been broadcasted!', 'href': `/post/${id}` };
 }
 
-backend.postDelete = async ({id}, {user, admin, db}) => {
+backend.postDelete = async ({ id }, { user, admin, db }) => {
     if (admin) {
-        let postUser = await db.all('SELECT * from post where id = ?',[
+        let postUser = await db.all('SELECT * from post where id = ?', [
             id
         ]) || {};
 
@@ -284,18 +284,18 @@ backend.postDelete = async ({id}, {user, admin, db}) => {
         ])
     }
 
-    await updateUser({user: user}, {db});
+    await updateUser({ user: user }, { db });
 
-    return {'success': 'Your post has been deleted!', 'href': `/post/${id}` };
+    return { 'success': 'Your post has been deleted!', 'href': `/post/${id}` };
 }
 
-backend.userGet = async ({user},{db}) => {
+backend.userGet = async ({ user }, { db }) => {
     var posts = await db.all('SELECT * from user WHERE username = ?', [
         user
     ])
 
     if (!posts || posts.length < 1) {
-        return {'success': 'User does not exist.'}
+        return { 'success': 'User does not exist.' }
     }
 
     var following = await db.all('SELECT * from follow WHERE username = ?', [
@@ -310,29 +310,29 @@ backend.userGet = async ({user},{db}) => {
 
     if (!followers) followers = [];
 
-    posts[0].rolesArr = await backend.userRoles({user},{db});
+    posts[0].rolesArr = await backend.userRoles({ user }, { db });
 
-    return {data: posts[0], following, followers };
+    return { data: posts[0], following, followers };
 }
 
-backend.postBulk = async ({page, id, user, cookies, sort, type}, {admin, db}) => {
+backend.postBulk = async ({ page, id, user, cookies, sort, type }, { admin, db }) => {
     var posts;
 
-    var userAuth = (await backend.token({cookies}, {db})).data || '';
+    var userAuth = (await backend.token({ cookies }, { db })).data || '';
 
     sort = (LEGAL_SORTS[sort]) || 'rating';
 
     if (sort + '' !== sort) sort = 'rating';
 
-    sort = sort.replaceAll('%d',Math.floor(new Date() * 1000));
+    sort = sort.replaceAll('%d', Math.floor(new Date() * 1000));
 
     let pageParams = [
-        page*ROW_COUNT,
+        page * ROW_COUNT,
         ROW_COUNT
     ]
 
     if (type == 'all') {
-        posts = await db.all('SELECT * from post ORDER BY '+sort+' DESC LIMIT ?, ?', [
+        posts = await db.all('SELECT * from post ORDER BY ' + sort + ' DESC LIMIT ?, ?', [
             ...pageParams
         ])
     } else if (type == 'post') {
@@ -342,39 +342,39 @@ backend.postBulk = async ({page, id, user, cookies, sort, type}, {admin, db}) =>
 
         if (posts.length == 0) posts.push({});
 
-        posts.push(...(await db.all('SELECT * from post WHERE id IN (SELECT id FROM tag WHERE reply = ?) ORDER BY '+sort+' DESC LIMIT ?, ?', [
+        posts.push(...(await db.all('SELECT * from post WHERE id IN (SELECT id FROM tag WHERE reply = ?) ORDER BY ' + sort + ' DESC LIMIT ?, ?', [
             id,
             ...pageParams
         ])))
 
     } else if (type == 'user') {
-        posts = await db.all('SELECT * from post WHERE username = ? ORDER BY '+sort+' DESC LIMIT ?, ?', [
+        posts = await db.all('SELECT * from post WHERE username = ? ORDER BY ' + sort + ' DESC LIMIT ?, ?', [
             user,
             ...pageParams
         ])
     } else if (type == 'follow') {
-        posts = await db.all('SELECT * from post WHERE username IN (SELECT following FROM follow WHERE username = ?) ORDER BY '+sort+' DESC LIMIT ?, ?', [
+        posts = await db.all('SELECT * from post WHERE username IN (SELECT following FROM follow WHERE username = ?) ORDER BY ' + sort + ' DESC LIMIT ?, ?', [
             userAuth,
             ...pageParams
         ])
     }
 
     posts = posts.map(post => {
-        return {...post, isAuthor: userAuth == post.username || admin};
+        return { ...post, isAuthor: userAuth == post.username || admin };
     })
 
-    return {data: posts};
+    return { data: posts };
 }
 
-backend.vote = async ({id, vote}, {user, db}) => {
-    if (!id || (vote != 'down' && vote != 'up')) return {success: 'fail' };
-    
+backend.vote = async ({ id, vote }, { user, db }) => {
+    if (!id || (vote != 'down' && vote != 'up')) return { success: 'fail' };
+
     var isCreator = (await db.all('SELECT * from post WHERE id = ?', [
         id
     ]))[0].username;
 
     if (isCreator == user)
-        return {success: 'fail' };
+        return { success: 'fail' };
 
     await db.run('DELETE FROM vote WHERE username = ? AND id = ?', [
         user,
@@ -397,7 +397,7 @@ backend.vote = async ({id, vote}, {user, db}) => {
     await db.run('UPDATE post SET upvotes = ?, downvotes = ?, rating = ? WHERE id = ?', [
         up,
         down,
-        calcVote(up,down),
+        calcVote(up, down),
         id
     ]);
 
@@ -413,39 +413,21 @@ backend.vote = async ({id, vote}, {user, db}) => {
     ]) || [];
 
     if (!user[0])
-        return {success: 'fail' };
+        return { success: 'fail' };
 
-    await updateUser({user: user[0].username}, {db});
+    await updateUser({ user: user[0].username }, { db });
 
-    return {data: {up,down}};
+    return { data: { up, down } };
 }
 
-backend.token = async ({cookies, token}, {db}) => {
-    var tokenIn;
-    if (token) {
-        tokenIn = token;
-    } else {
-        tokenIn = cookies.get('token');
-    }
-
-    var existingAccounts = await db.all('SELECT username from token WHERE token = ?',[
-        tokenIn
-    ]);
-    
-    if (!existingAccounts || existingAccounts.length < 1)
-        return false;
-
-    return {data: existingAccounts[0].username, token: tokenIn};
-}
-
-backend.follow = async ({target}, {user, db}) => {
-    var userExists = ((await db.all('SELECT * FROM user WHERE username = ?',[
+backend.follow = async ({ target }, { user, db }) => {
+    var userExists = ((await db.all('SELECT * FROM user WHERE username = ?', [
         target
     ])) || []).length;
-    
+
     if (userExists < 1) return;
 
-    var isFollowing = await db.all('SELECT * FROM follow WHERE username = ? AND following = ?',[
+    var isFollowing = await db.all('SELECT * FROM follow WHERE username = ? AND following = ?', [
         user,
         target
     ]);
@@ -453,12 +435,12 @@ backend.follow = async ({target}, {user, db}) => {
     let unfollowed = (isFollowing && isFollowing.length > 0);
 
     if (unfollowed) {
-        await db.run('DELETE FROM follow WHERE username = ? AND following = ?',[
+        await db.run('DELETE FROM follow WHERE username = ? AND following = ?', [
             user,
             target
         ]);
     } else {
-        await db.run('INSERT INTO follow (username, following) VALUES (?, ?)',[
+        await db.run('INSERT INTO follow (username, following) VALUES (?, ?)', [
             user,
             target
         ]);
@@ -479,11 +461,11 @@ backend.follow = async ({target}, {user, db}) => {
         0
     ]);
 
-    return {'success': 'User followed/unfollowed.', 'data': {following, followers}};
+    return { 'success': 'User followed/unfollowed.', 'data': { following, followers } };
 };
 
-backend.bio = async ({bio}, {user, db}) => {
-    var lengthCheck = checkLength(bio,'Post content',1,256);
+backend.bio = async ({ bio }, { user, db }) => {
+    var lengthCheck = checkLength(bio, 'Post content', 1, 256);
 
     if (lengthCheck)
         return lengthCheck;
@@ -496,7 +478,7 @@ backend.bio = async ({bio}, {user, db}) => {
     return;
 };
 
-backend.messages = async ({isRead}, {user, db}) => {
+backend.messages = async ({ isRead }, { user, db }) => {
     var msg = await db.all('SELECT * FROM messages WHERE username = ? ORDER BY time DESC', [
         user
     ]) || [];
@@ -509,24 +491,24 @@ backend.messages = async ({isRead}, {user, db}) => {
 
     let read = msg.filter(x => !x.read).length;
 
-    return {'data': {msg, read}};
+    return { 'data': { msg, read } };
 };
 
-backend.chatAdd = async ({content, room}, {user,db}) => {
-    if (!content) return {'success': 'No message provided.'}
+backend.chatAdd = async ({ content, room }, { user, db }) => {
+    if (!content) return { 'success': 'No message provided.' }
 
     if (room.startsWith('msg:')) {
         let users = room.split(':');
         if (users.indexOf(user) < 1 || user == '') {
-            return {data: {'success': 'You were not invited.'}};
+            return { data: { 'success': 'You were not invited.' } };
         }
     }
 
-    var lengthCheck = checkLength(content,'Post content',1,10240);
+    var lengthCheck = checkLength(content, 'Post content', 1, 10240);
 
     if (lengthCheck)
         return lengthCheck;
-        
+
     let time = Math.floor(new Date() * 1000);
 
     await db.run('INSERT INTO chat (username, content, time, room) VALUES (?, ?, ?, ?)', [
@@ -536,14 +518,14 @@ backend.chatAdd = async ({content, room}, {user,db}) => {
         room
     ])
 
-    return {'data': {content, username: user, time, room}};
+    return { 'data': { content, username: user, time, room } };
 }
 
-backend.chatGet = async ({room}, {user,db}) => {
+backend.chatGet = async ({ room }, { user, db }) => {
     if (room.startsWith('msg:')) {
         let users = room.split(':');
         if (users.indexOf(user) < 1 || user == '') {
-            return {data: {'success': 'You were not invited.'}};
+            return { data: { 'success': 'You were not invited.' } };
         }
     }
 
@@ -551,36 +533,56 @@ backend.chatGet = async ({room}, {user,db}) => {
         room
     ])
 
-    return {'data': messages};
+    return { 'data': messages };
 }
 
-backend.token = async ({}, {user, db}) => {
+backend.token = async ({ cookies }, { db }) => {
+    const token = cookies.get('token');
+
+    let username;
+    if (!token) {
+        username = '???'
+    } else {
+        username = await fetch('https://auth.montidg.net/api/account/token/', {
+            'method': 'POST',
+            'headers': {
+                "Content-Type": "application/json",
+            },
+            'body': JSON.stringify({
+                token: token,
+                scope: 'sanifae'
+            })
+        }).then(x => x.json());
+        if (!username.data || username.data.length < 1) return { 'success': 'Account not authenticated.' };
+        username = username.data[0].username;
+    }
+
     let authExists = await db.all('SELECT * FROM auth WHERE username = ?', [
-        user
+        username
     ]);
 
-    if (authExists && authExists.length > 0) return {'success': 'You can\'t log into a legacy account!'};
+    if (authExists && authExists.length > 0) return { 'success': 'You can\'t log into a legacy account!' };
 
-    if (user === '???' || !user) return {'success': 'Account not authenticated.'};
-    return {'success': 'success', 'username': user};
+    if (username === '???' || !username) return { 'success': 'Account not authenticated.' };
+    return { 'data': username, token };
 };
 
-backend.auth = async ({}, {user, db}) => {
-    if (user === '???' || !user) return {'success': 'Account not authenticated.'};
+backend.auth = async ({ }, { user, db }) => {
+    if (user === '???' || !user) return { 'success': 'Account not authenticated.' };
 
     let userExists = await db.all('SELECT * FROM user WHERE username = ?', [
         user
     ]);
 
-    if (userExists && userExists.length > 0) return {'success': 'success', 'username': user};
+    if (userExists && userExists.length > 0) return { 'success': 'success', 'username': user };
 
-    await db.run('INSERT INTO user (username) VALUES (?)',[
+    await db.run('INSERT INTO user (username) VALUES (?)', [
         user
     ]);
 
-    await updateUser({user: user}, {db});
+    await updateUser({ user: user }, { db });
 
-    return {'success': 'success', 'username': user};
+    return { 'success': 'success', 'username': user };
 }
 
 export {
