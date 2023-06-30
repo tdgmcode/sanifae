@@ -74,9 +74,6 @@
             <a href='/new_post'>
                 Post
             </a>
-            <a href='/chat/main'>
-                Chat
-            </a>
         {/if}
     </div>
     <div> 
